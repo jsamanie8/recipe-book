@@ -8,12 +8,12 @@ import Col from 'react-bootstrap/Col';
 const Login = () => {
     const [user, handleUser] = useState({ email: '', password: '' });
 
-    const handleChange = (event) => {
-        if (event.target.id === 'formName') {
-            handleUser({ email: event.target.value, password: user.password });
-        } else {
-            handleUser({ email: user.email, password: event.target.value });
-        }
+    const handleEmailChange = (event) => {
+        handleUser({ email: event.target.value, password: user.password });
+    }
+
+    const handlePasswordChange = (event) => {
+        handleUser({ email: user.email, password: event.target.value });
     }
 
     return (
@@ -31,11 +31,11 @@ const Login = () => {
                         <Col md={{ span: 4, offset: 0 }}>
                             <Form.Group controlId="formName">
                                 <Form.Label>Email:</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" value={user.email} onChange={handleChange}></Form.Control>
+                                <Form.Control type="email" placeholder="Enter email" value={user.email} onChange={handleEmailChange}></Form.Control>
                             </Form.Group>
                             <Form.Group controlId="formPassword">
                                 <Form.Label>Password:</Form.Label>
-                                <Form.Control type="password" placeholder="Password" value={user.password} onChange={handleChange}></Form.Control>
+                                <Form.Control type="password" placeholder="Password" value={user.password} onChange={handlePasswordChange}></Form.Control>
                             </Form.Group>
                         </Col>
                     </Row>
