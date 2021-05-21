@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 
 const Login = () => {
     const [user, handleUser] = useState({ email: '', password: '' });
+    const [owner, handleAdmin] = useState(false);
 
     const handleEmailChange = (event) => {
         handleUser({ email: event.target.value, password: user.password });
@@ -16,20 +17,35 @@ const Login = () => {
         handleUser({ email: user.email, password: event.target.value });
     }
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log('submit!!', event);
+    }
+
+    const handleLoginType = (event) => {
+        event.preventDefault();
+        handleAdmin(!owner);
+    }
+
     return (
         <>
             <Container className="mt-4">
                 <Row className="justify-content-md-center">
                     <Col md={{ span: 4, offset: 10 }}>
-                        Recipe Owner? <Button variant="primary">Click here</Button>
+                        {owner ? 'Not an Owner?' : 'Recipe Owner?'} <Button variant="warning" onClick={handleLoginType}>Click here</Button>
                     </Col>
                 </Row>
             </Container>
             <Container className="mt-5">
+                <Row className="justify-content-md-center mb-3">
+                    <Col md={{ span: 4, offset: 0 }}>
+                        Login to View your Favorite Recipes!
+                    </Col>
+                </Row>
                 <Form>
                     <Row className="justify-content-md-center">
-                        <Col md={{ span: 4, offset: 0 }}>
-                            <Form.Group controlId="formName">
+                        <Col md={{ span: 4, offset: 0 }} className="border">
+                            <Form.Group controlId="formName" className="mt-3 mb-3">
                                 <Form.Label>Email:</Form.Label>
                                 <Form.Control type="email" placeholder="Enter email" value={user.email} onChange={handleEmailChange}></Form.Control>
                             </Form.Group>
@@ -37,6 +53,9 @@ const Login = () => {
                                 <Form.Label>Password:</Form.Label>
                                 <Form.Control type="password" placeholder="Password" value={user.password} onChange={handlePasswordChange}></Form.Control>
                             </Form.Group>
+                            <Button variant="primary" type="submit" className="mt-3 mb-3" onClick={handleSubmit}>
+                                Submit
+                            </Button>
                         </Col>
                     </Row>
                 </Form>
