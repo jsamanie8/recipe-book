@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { create } from '../../services/ownerService';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -19,6 +20,20 @@ const Login = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (owner) {
+            console.log('Owner Submitted');
+        } else {
+            console.log('Admin Submitted');
+        }
+        // debugger;
+        // TODO -- CHANGE THE PAYLOAD TO THE FORM CONTENT
+        const payload = {
+            FirstName: 'TEST',
+            LastName: 'Samaniego',
+            Password: 'Password1',
+            Email: 'Naya@gmail.com'
+        }
+        create(payload);
         console.log('submit!!', event);
     }
 
