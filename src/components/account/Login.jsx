@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { create } from '../../services/ownerService';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -8,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 
 const Login = () => {
     const [user, handleUser] = useState({ email: '', password: '' });
-    const [owner, handleAdmin] = useState(false);
+    const [owner, handleOwner] = useState(false);
 
     const handleEmailChange = (event) => {
         handleUser({ email: event.target.value, password: user.password });
@@ -25,21 +24,12 @@ const Login = () => {
         } else {
             console.log('Admin Submitted');
         }
-        // debugger;
-        // TODO -- CHANGE THE PAYLOAD TO THE FORM CONTENT
-        const payload = {
-            FirstName: 'TEST',
-            LastName: 'Samaniego',
-            Password: 'Password1',
-            Email: 'Naya@gmail.com'
-        }
-        create(payload);
         console.log('submit!!', event);
     }
 
     const handleLoginType = (event) => {
         event.preventDefault();
-        handleAdmin(!owner);
+        handleOwner(!owner);
     }
 
     return (
