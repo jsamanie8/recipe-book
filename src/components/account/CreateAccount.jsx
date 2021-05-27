@@ -17,20 +17,28 @@ class CreateAccount extends React.Component {
     }
 
     handleChange = (event) => {
-        console.log(event);
+        event.preventDefault();
+        const name = event.target.name;
+        const value = event.target.value;
+        this.setState(prevState => {
+            return {
+                owner: {
+                    ...prevState.owner,
+                    [name]: value
+                }
+            }
+        });
     }
 
     handleSubmit = (event) => {
-        console.log(event);
-        // TODO -- CHANGE THE PAYLOAD TO THE FORM CONTENT
+        event.preventDefault();
+        const payload = this.state.owner;
+        create(payload, this.creationResult);
+    }
+
+    creationResult = () => {
         debugger;
-        const payload = {
-            FirstName: 'TEST2',
-            LastName: 'Samaniego',
-            Password: 'Password1',
-            Email: 'Naya@gmail.com'
-        }
-        create(payload);
+        console.log('Handle Success or Error here.');
     }
 
     render() {
@@ -51,6 +59,7 @@ class CreateAccount extends React.Component {
                                         type="text"
                                         placeholder="Enter First Name"
                                         value={this.state.owner.firstName}
+                                        name="firstName"
                                         onChange={this.handleChange}>
                                     </Form.Control>
                                 </Form.Group>
@@ -60,6 +69,7 @@ class CreateAccount extends React.Component {
                                         type="text"
                                         placeholder="Enter Last Name"
                                         value={this.state.owner.lastName}
+                                        name="lastName"
                                         onChange={this.handleChange}>
                                     </Form.Control>
                                 </Form.Group>
@@ -69,6 +79,7 @@ class CreateAccount extends React.Component {
                                         type="email"
                                         placeholder="Email"
                                         value={this.state.owner.email}
+                                        name="email"
                                         onChange={this.handleChange}>
                                     </Form.Control>
                                 </Form.Group>
@@ -78,6 +89,7 @@ class CreateAccount extends React.Component {
                                         type="password"
                                         placeholder="Password"
                                         value={this.state.owner.password}
+                                        name="password"
                                         onChange={this.handleChange}>
                                     </Form.Control>
                                 </Form.Group>

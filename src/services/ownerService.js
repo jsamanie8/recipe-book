@@ -2,8 +2,12 @@ import axios from 'axios';
 
 const baseUrl = `https://localhost:5001/api/owners`;
 
-export const create = (payload) => {
+export const create = (payload, result) => {
     axios.post(baseUrl, payload)
-        .then(console.log('Created!'))
-        .catch(console.log('error'));
+        .then(
+            //TODO, handle the result here.
+            //Arrow function.
+            result
+        )
+        .catch(result);
 }
