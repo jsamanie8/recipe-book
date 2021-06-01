@@ -7,7 +7,9 @@ export const create = (payload, result) => {
         .then(
             //TODO, handle the result here.
             //Arrow function.
-            result
+            (result) => {
+                result(result.status);
+            }
         )
         .catch(result);
 }

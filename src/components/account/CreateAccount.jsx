@@ -36,9 +36,21 @@ class CreateAccount extends React.Component {
         create(payload, this.creationResult);
     }
 
-    creationResult = () => {
-        debugger;
-        console.log('Handle Success or Error here.');
+    creationResult = (result) => {
+        //TODO: result is not a function...
+        if (result === 200) {
+            this.successCreation();
+        } else {
+            this.errorCreation();
+        }
+    }
+
+    successCreation = () => {
+        console.log('Successfully Created');
+    }
+
+    errorCreation = () => {
+        console.log('Error');
     }
 
     render() {
