@@ -1,5 +1,6 @@
 import React from 'react';
 import { create } from '../../services/ownerService';
+import { default as SuccessAlert } from '../alerts/Success';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -13,7 +14,9 @@ class CreateAccount extends React.Component {
             lastName: '',
             email: '',
             password: ''
-        }
+        },
+        successMessage: 'Successfully created account!',
+        creationSuccess: false
     }
 
     handleChange = (event) => {
@@ -33,24 +36,39 @@ class CreateAccount extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         const payload = this.state.owner;
-        create(payload, this.creationResult);
+        create(payload)
+            .then(res => {
+                this.successCreation(res);
+            })
+            .catch(err => {
+                this.errorCreation(err);
+            });
     }
 
-    creationResult = (result) => {
-        //TODO: result is not a function...
-        if (result === 200) {
-            this.successCreation();
-        } else {
-            this.errorCreation();
-        }
+    clearForm = () => {
+        this.setState({
+            owner: {
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: ''
+            }
+        })
     }
 
-    successCreation = () => {
-        console.log('Successfully Created');
+    successCreation = (result) => {
+        console.log('Successfully Created', result);
+        this.clearForm();
+        this.setState({
+            creationSuccess: true
+        })
     }
 
-    errorCreation = () => {
-        console.log('Error');
+    errorCreation = (err) => {
+        console.log('Error', err);
+        this.setState({
+            creationSuccess: false
+        })
     }
 
     render() {
@@ -60,7 +78,10 @@ class CreateAccount extends React.Component {
                     <Row className="justify-content-md-center mb-3">
                         <Col md={{ span: 4, offset: 0 }}>
                             Create your Owner's Account!
-                    </Col>
+                        </Col>
+                        {this.state.creationSuccess ? (
+                            <SuccessAlert message={this.state.successMessage}></SuccessAlert>
+                        ) : null}
                     </Row>
                     <Form>
                         <Row className="justify-content-md-center">
