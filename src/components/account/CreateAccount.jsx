@@ -65,7 +65,6 @@ class CreateAccount extends React.Component {
     }
 
     errorCreation = (err) => {
-        console.log('Error', err);
         this.setState({
             creationSuccess: false
         })
