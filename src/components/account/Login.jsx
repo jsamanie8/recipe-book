@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [user, handleUser] = useState({ email: '', password: '' });
@@ -64,6 +65,11 @@ const Login = () => {
                         </Col>
                     </Row>
                 </Form>
+                <Row className="justify-content-md-center mb-3">
+                    <Col md={{ span: 4, offset: 0 }} className="mt-2">
+                        <Link to="/createAccount">Don't have an account?</Link>
+                    </Col>
+                </Row>
             </Container>
         </>
     );

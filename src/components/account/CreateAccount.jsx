@@ -1,11 +1,8 @@
 import React from 'react';
 import { create } from '../../services/ownerService';
 import { default as SuccessAlert } from '../alerts/Success';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Button, Container, Form, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 class CreateAccount extends React.Component {
     state = {
@@ -13,7 +10,8 @@ class CreateAccount extends React.Component {
             firstName: '',
             lastName: '',
             email: '',
-            password: ''
+            password: '',
+            ownerFlag: 'No'
         },
         successMessage: 'Successfully created account!',
         creationSuccess: false
@@ -76,11 +74,15 @@ class CreateAccount extends React.Component {
                 <Container className="mt-5">
                     <Row className="justify-content-md-center mb-3">
                         <Col md={{ span: 4, offset: 0 }}>
-                            Create your Owner's Account!
+                            Create your account!
                         </Col>
-                        {this.state.creationSuccess ? (
-                            <SuccessAlert message={this.state.successMessage}></SuccessAlert>
-                        ) : null}
+                    </Row>
+                    <Row className="justify-content-md-center mb-3">
+                        <Col md={{ span: 4, offset: 0 }}>
+                            {this.state.creationSuccess ? (
+                                <SuccessAlert message={this.state.successMessage}></SuccessAlert>
+                            ) : null}
+                        </Col>
                     </Row>
                     <Form>
                         <Row className="justify-content-md-center">
@@ -125,12 +127,27 @@ class CreateAccount extends React.Component {
                                         onChange={this.handleChange}>
                                     </Form.Control>
                                 </Form.Group>
+                                <Form.Group controlId="formOwner">
+                                    <Form.Label>Are you an Owner?</Form.Label>
+                                    <Form.Control
+                                        as="select"
+                                        name="ownerFlag"
+                                        onChange={this.handleChange}>
+                                        <option>No</option>
+                                        <option>Yes</option>
+                                    </Form.Control>
+                                </Form.Group>
                                 <Button variant="primary" type="submit" className="mt-3 mb-3" onClick={this.handleSubmit}>
                                     Submit
                             </Button>
                             </Col>
                         </Row>
                     </Form>
+                    <Row className="justify-content-md-center mb-3">
+                        <Col md={{ span: 4, offset: 0 }} className="mt-2">
+                            <Link to="/login">Have an account?</Link>
+                        </Col>
+                    </Row>
                 </Container>
             </>
         );
