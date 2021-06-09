@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom';
 
 class CreateAccount extends React.Component {
     state = {
-        owner: {
+        user: {
             firstName: '',
             lastName: '',
             email: '',
             password: '',
-            ownerFlag: 'No'
+            ownerFlag: false,
+            adminFlag: false
         },
         successMessage: 'Successfully created account!',
         creationSuccess: false
@@ -23,17 +24,32 @@ class CreateAccount extends React.Component {
         const value = event.target.value;
         this.setState(prevState => {
             return {
-                owner: {
-                    ...prevState.owner,
+                user: {
+                    ...prevState.user,
                     [name]: value
                 }
             }
         });
     }
 
+    handleSelectChange = (event) => {
+        event.preventDefault();
+        const name = event.target.name;
+        const value = (event.target.value === 'true');
+        this.setState(prevState => {
+            return {
+                user: {
+                    ...prevState.user,
+                    [name]: value
+                }
+            }
+        })
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
-        const payload = this.state.owner;
+        const payload = this.state.user;
+        //Look at flags and call appropriate method: owner/user/admin
         create(payload)
             .then(res => {
                 this.successCreation(res);
@@ -43,9 +59,21 @@ class CreateAccount extends React.Component {
             });
     }
 
+    createOwner = (payload) => {
+
+    }
+
+    createUser = (payload) => {
+
+    }
+
+    createAdmin = (payload) => {
+
+    }
+
     clearForm = () => {
         this.setState({
-            owner: {
+            user: {
                 firstName: '',
                 lastName: '',
                 email: '',
@@ -65,7 +93,7 @@ class CreateAccount extends React.Component {
     errorCreation = (err) => {
         this.setState({
             creationSuccess: false
-        })
+        });
     }
 
     render() {
@@ -92,7 +120,7 @@ class CreateAccount extends React.Component {
                                     <Form.Control
                                         type="text"
                                         placeholder="Enter First Name"
-                                        value={this.state.owner.firstName}
+                                        value={this.state.user.firstName}
                                         name="firstName"
                                         onChange={this.handleChange}>
                                     </Form.Control>
@@ -102,7 +130,7 @@ class CreateAccount extends React.Component {
                                     <Form.Control
                                         type="text"
                                         placeholder="Enter Last Name"
-                                        value={this.state.owner.lastName}
+                                        value={this.state.user.lastName}
                                         name="lastName"
                                         onChange={this.handleChange}>
                                     </Form.Control>
@@ -112,7 +140,7 @@ class CreateAccount extends React.Component {
                                     <Form.Control
                                         type="email"
                                         placeholder="Email"
-                                        value={this.state.owner.email}
+                                        value={this.state.user.email}
                                         name="email"
                                         onChange={this.handleChange}>
                                     </Form.Control>
@@ -122,7 +150,7 @@ class CreateAccount extends React.Component {
                                     <Form.Control
                                         type="password"
                                         placeholder="Password"
-                                        value={this.state.owner.password}
+                                        value={this.state.user.password}
                                         name="password"
                                         onChange={this.handleChange}>
                                     </Form.Control>
@@ -132,11 +160,23 @@ class CreateAccount extends React.Component {
                                     <Form.Control
                                         as="select"
                                         name="ownerFlag"
-                                        onChange={this.handleChange}>
-                                        <option>No</option>
-                                        <option>Yes</option>
+                                        onChange={this.handleSelectChange}>
+                                        <option value={false}>No</option>
+                                        <option value={true}>Yes</option>
                                     </Form.Control>
                                 </Form.Group>
+                                {this.state.user.ownerFlag ? null : (
+                                    <Form.Group controlId="formAdmin">
+                                        <Form.Label>Will you be an Admin?</Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            name="adminFlag"
+                                            onChange={this.handleSelectChange}>
+                                            <option value={false}>No</option>
+                                            <option value={true}>Yes</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                )}
                                 <Button variant="primary" type="submit" className="mt-3 mb-3" onClick={this.handleSubmit}>
                                     Submit
                             </Button>
