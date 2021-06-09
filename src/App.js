@@ -7,11 +7,9 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/login">
-          <Login />
+        <Route path="/createAccount" component={CreateAccount}>
         </Route>
-        <Route path="/createAccount">
-          <CreateAccount />
+        <Route path={["/", "/login"]} component={Login}>
         </Route>
       </Switch>
     </Router>
