@@ -1,5 +1,5 @@
 import React from 'react';
-import { create } from '../../services/ownerService';
+import { create as ownerCreateService } from '../../services/ownerService';
 import { default as SuccessAlert } from '../alerts/Success';
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -49,26 +49,25 @@ class CreateAccount extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         const payload = this.state.user;
-        //Look at flags and call appropriate method: owner/user/admin
-        create(payload)
-            .then(res => {
-                this.successCreation(res);
-            })
-            .catch(err => {
-                this.errorCreation(err);
-            });
+        if (payload.ownerFlag) {
+            this.createOwner(payload);
+        } else {
+            this.createUser(payload);
+        }
     }
 
     createOwner = (payload) => {
-
+        ownerCreateService(payload)
+            .then(res => {
+                this.success(res);
+            })
+            .catch(err => {
+                this.error(err)
+            })
     }
 
     createUser = (payload) => {
-
-    }
-
-    createAdmin = (payload) => {
-
+        //Call user service once it's created.
     }
 
     clearForm = () => {
@@ -82,7 +81,7 @@ class CreateAccount extends React.Component {
         })
     }
 
-    successCreation = (result) => {
+    success = (result) => {
         console.log('Successfully Created', result);
         this.clearForm();
         this.setState({
@@ -90,7 +89,7 @@ class CreateAccount extends React.Component {
         })
     }
 
-    errorCreation = (err) => {
+    error = (err) => {
         this.setState({
             creationSuccess: false
         });
