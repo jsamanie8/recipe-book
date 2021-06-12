@@ -1,5 +1,6 @@
 import React from 'react';
 import { create as ownerCreateService } from '../../services/ownerService';
+import { create as userCreateService } from '../../services/userService';
 import { default as SuccessAlert } from '../alerts/Success';
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -12,7 +13,7 @@ class CreateAccount extends React.Component {
             email: '',
             password: '',
             ownerFlag: false,
-            adminFlag: false
+            admin: false
         },
         successMessage: 'Successfully created account!',
         creationSuccess: false
@@ -63,11 +64,17 @@ class CreateAccount extends React.Component {
             })
             .catch(err => {
                 this.error(err)
-            })
+            });
     }
 
     createUser = (payload) => {
-        //Call user service once it's created.
+        userCreateService(payload)
+            .then(res => {
+                this.success(res);
+            })
+            .catch(err => {
+                this.error(err)
+            });
     }
 
     clearForm = () => {
@@ -76,7 +83,9 @@ class CreateAccount extends React.Component {
                 firstName: '',
                 lastName: '',
                 email: '',
-                password: ''
+                password: '',
+                ownerFlag: false,
+                admin: false
             }
         })
     }
@@ -169,7 +178,7 @@ class CreateAccount extends React.Component {
                                         <Form.Label>Will you be an Admin?</Form.Label>
                                         <Form.Control
                                             as="select"
-                                            name="adminFlag"
+                                            name="admin"
                                             onChange={this.handleSelectChange}>
                                             <option value={false}>No</option>
                                             <option value={true}>Yes</option>
@@ -178,7 +187,7 @@ class CreateAccount extends React.Component {
                                 )}
                                 <Button variant="primary" type="submit" className="mt-3 mb-3" onClick={this.handleSubmit}>
                                     Submit
-                            </Button>
+                                </Button>
                             </Col>
                         </Row>
                     </Form>
