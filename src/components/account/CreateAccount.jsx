@@ -59,22 +59,14 @@ class CreateAccount extends React.Component {
 
     createOwner = (payload) => {
         ownerCreateService(payload)
-            .then(res => {
-                this.success(res);
-            })
-            .catch(err => {
-                this.error(err)
-            });
+            .then(this.success)
+            .catch(this.error);
     }
 
     createUser = (payload) => {
         userCreateService(payload)
-            .then(res => {
-                this.success(res);
-            })
-            .catch(err => {
-                this.error(err)
-            });
+            .then(this.success)
+            .catch(this.error);
     }
 
     clearForm = () => {

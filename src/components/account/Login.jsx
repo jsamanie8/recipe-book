@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { login } from '../../services/userService';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -23,7 +24,9 @@ const Login = () => {
         if (owner) {
             console.log('Owner Submitted');
         } else {
-            console.log('Admin Submitted');
+            login(user)
+                .then(handleSuccessLogin)
+                .catch(handleErrorLogin);
         }
         console.log('submit!!', event);
     }
@@ -31,6 +34,14 @@ const Login = () => {
     const handleLoginType = (event) => {
         event.preventDefault();
         handleOwner(!owner);
+    }
+
+    const handleSuccessLogin = (data) => {
+        console.log(data);
+    }
+
+    const handleErrorLogin = (err) => {
+        console.log(err);
     }
 
     return (
