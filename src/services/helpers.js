@@ -5,7 +5,7 @@ const globalSuccess = response => {
 }
 
 const globalError = error => {
-    return Promise.reject(error);
+    return Promise.reject(new Error(error));
 }
 
 export {

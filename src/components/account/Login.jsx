@@ -6,10 +6,12 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Link } from 'react-router-dom';
+import { default as ErrorAlert } from '../alerts/Error';
 
 const Login = () => {
     const [user, handleUser] = useState({ email: '', password: '' });
     const [owner, handleOwner] = useState(false);
+    const [errorObj, handleError] = useState({ error: false, message: '', alertShow: false });
 
     const handleEmailChange = (event) => {
         handleUser({ email: event.target.value, password: user.password });
@@ -21,14 +23,17 @@ const Login = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        formValidation();
+    }
+
+    const attemptLogin = () => {
         if (owner) {
             console.log('Owner Submitted');
         } else {
             login(user)
-                .then(handleSuccessLogin)
+                .then(handleSuccess)
                 .catch(handleErrorLogin);
         }
-        console.log('submit!!', event);
     }
 
     const handleLoginType = (event) => {
@@ -36,12 +41,33 @@ const Login = () => {
         handleOwner(!owner);
     }
 
-    const handleSuccessLogin = (data) => {
-        console.log(data);
+    const handleAlertClose = (event) => {
+        handleError({ error: false, message: '', alertShow: false });
+    }
+
+    const formValidation = () => {
+        if (!user.email) {
+            handleError({ error: true, message: 'Please provide an email address.', alertShow: true });
+        } else if (!user.password) {
+            handleError({ error: true, message: 'Please provide a password.', alertShow: true });
+        } else {
+            attemptLogin();
+        }
+    }
+
+    const handleSuccess = (data) => {
+        if (data.length > 0) {
+            //TODO.
+            console.log('There are records!');
+        } else {
+            handleError({ error: true, message: 'No records were found. :(', alertShow: true });
+            console.log('No records were found. :(');
+        }
     }
 
     const handleErrorLogin = (err) => {
         console.log(err);
+        handleError({ error: true, message: 'Incorrect email or password.', alertShow: true });
     }
 
     return (
@@ -57,6 +83,13 @@ const Login = () => {
                 <Row className="justify-content-md-center mb-3">
                     <Col md={{ span: 4, offset: 0 }}>
                         Login to View your Favorite Recipes!
+                    </Col>
+                </Row>
+                <Row className="justify-content-md-center mb-3">
+                    <Col md={{ span: 4, offset: 0 }}>
+                        {errorObj.error ? (
+                            <ErrorAlert message={errorObj.message} show={errorObj.alertShow} handleClose={handleAlertClose}></ErrorAlert>
+                        ) : null}
                     </Col>
                 </Row>
                 <Form>

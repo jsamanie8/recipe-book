@@ -1,9 +1,25 @@
 import axios from 'axios';
+import * as helpers from './helpers';
 
 const baseUrl = `https://localhost:5001/api/owners`;
 
-export const create = (payload) => {
-    return axios.post(baseUrl, payload)
-        .then(res => { return res })
-        .catch(err => { return err });
+const create = (payload) => {
+    const config = {
+        method: 'POST',
+        url: `${baseUrl}`,
+        data: payload,
+        withCredentials: true,
+        crossdomain: true,
+        headers: { 'Content-Type': 'application/json' }
+    }
+
+    return axios(config)
+        .then(helpers.globalSuccess)
+        .catch(helpers.globalError);
+
+    // return axios.post(baseUrl, payload)
+    //     .then(res => { return res })
+    //     .catch(err => { return err });
 }
+
+export { create }

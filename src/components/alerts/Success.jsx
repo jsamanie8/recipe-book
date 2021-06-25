@@ -1,16 +1,9 @@
-import { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
 const Success = (props) => {
-    const [show, setShow] = useState(true);
-
-    const handleClose = () => {
-        setShow(false);
-    }
-
-    if (show) {
+    if (props.show) {
         return (
-            <Alert variant="success" onClose={handleClose} dismissible>
+            <Alert variant="success" onClose={props.handleClose} dismissible>
                 {props.message}
             </Alert>
         );

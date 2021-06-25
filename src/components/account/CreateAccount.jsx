@@ -16,7 +16,8 @@ class CreateAccount extends React.Component {
             admin: false
         },
         successMessage: 'Successfully created account!',
-        creationSuccess: false
+        creationSuccess: false,
+        alertShow: false
     }
 
     handleChange = (event) => {
@@ -57,6 +58,13 @@ class CreateAccount extends React.Component {
         }
     }
 
+    handleAlertClose = (event) => {
+        this.setState({
+            successMessage: '',
+            alertShow: false
+        });
+    }
+
     createOwner = (payload) => {
         ownerCreateService(payload)
             .then(this.success)
@@ -86,7 +94,8 @@ class CreateAccount extends React.Component {
         console.log('Successfully Created', result);
         this.clearForm();
         this.setState({
-            creationSuccess: true
+            creationSuccess: true,
+            alertShow: true
         })
     }
 
@@ -108,7 +117,11 @@ class CreateAccount extends React.Component {
                     <Row className="justify-content-md-center mb-3">
                         <Col md={{ span: 4, offset: 0 }}>
                             {this.state.creationSuccess ? (
-                                <SuccessAlert message={this.state.successMessage}></SuccessAlert>
+                                <SuccessAlert
+                                    message={this.state.successMessage}
+                                    show={this.state.alertShow}
+                                    handleClose={this.handleAlertClose}>
+                                </SuccessAlert>
                             ) : null}
                         </Col>
                     </Row>
