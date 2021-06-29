@@ -16,10 +16,6 @@ const create = (payload) => {
     return axios(config)
         .then(helpers.globalSuccess)
         .catch(helpers.globalError);
-
-    // return axios.post(baseUrl, payload)
-    //     .then(res => { return res })
-    //     .catch(err => { return err });
 }
 
 export { create }
