@@ -7,30 +7,25 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Link, useHistory } from 'react-router-dom';
 import { default as ErrorAlert } from '../alerts/Error';
+import { validateEmail } from '../helpers/validateEmail';
 
 const Login = () => {
-    const [user, handleUser] = useState({ email: '', password: '', owner: false });
-    const [owner, handleOwner] = useState(false);
+    const [user, handleUser] = useState({ email: '', password: '', isOwner: false });
+    // const [owner, handleOwner] = useState(false);
     const [errorObj, handleError] = useState({ error: false, message: '', alertShow: false });
     let history = useHistory();
 
     const handleEmailChange = (event) => {
-        handleUser({ email: event.target.value, password: user.password, owner: user.owner });
+        handleUser({ email: event.target.value, password: user.password, isOwner: user.isOwner });
     }
 
     const handlePasswordChange = (event) => {
-        handleUser({ email: user.email, password: event.target.value, owner: user.owner });
+        handleUser({ email: user.email, password: event.target.value, isOwner: user.isOwner });
     }
 
     const handleSelectChange = (event) => {
         const value = (event.target.value === 'true');
-        if (value) {
-            handleOwner(true);
-        } else {
-            handleOwner(false);
-        }
-
-        handleUser({ email: user.email, password: user.password, owner: value });
+        handleUser({ email: user.email, password: user.password, isOwner: value });
     }
 
     const handleSubmit = (event) => {
@@ -39,31 +34,38 @@ const Login = () => {
     }
 
     const attemptLogin = () => {
-        if (owner) {
-            console.log('Owner Submitted');
-        } else {
-            login(user)
-                .then(handleSuccess)
-                .catch(handleErrorLogin);
-        }
+        login(user)
+            .then(handleSuccess)
+            .catch(handleErrorLogin);
     }
-
-    // const handleLoginType = (event) => {
-    //     event.preventDefault();
-    //     handleOwner(!owner);
-    // }
 
     const handleAlertClose = (event) => {
         handleError({ error: false, message: '', alertShow: false });
     }
 
-    const formValidation = () => {
+    const isValidEmail = (event) => {
+        event.preventDefault();
+        checkEmail(event.target.value);
+    }
+
+    const formValidation = async () => {
+        const isValidEmail = await checkEmail(user.email);
         if (!user.email) {
             handleError({ error: true, message: 'Please provide an email address.', alertShow: true });
         } else if (!user.password) {
             handleError({ error: true, message: 'Please provide a password.', alertShow: true });
-        } else {
+        } else if (isValidEmail) {
             attemptLogin();
+        }
+    }
+
+    const checkEmail = (email) => {
+        const isValidEmail = validateEmail(email);
+        if (!isValidEmail) {
+            handleError({ error: true, message: 'Please provide a valid email address.', alertShow: true });
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -82,11 +84,6 @@ const Login = () => {
     return (
         <>
             <Container className="mt-4">
-                {/* <Row className="justify-content-md-center">
-                    <Col md={{ span: 4, offset: 10 }}>
-                        {owner ? 'Not an Owner?' : 'Recipe Owner?'} <Button variant="warning" onClick={handleLoginType}>Click here</Button>
-                    </Col>
-                </Row> */}
             </Container>
             <Container className="mt-5">
                 <Row className="justify-content-md-center mb-3">
@@ -110,7 +107,9 @@ const Login = () => {
                                     type="email"
                                     placeholder="Enter email"
                                     value={user.email}
-                                    onChange={handleEmailChange}>
+                                    onChange={handleEmailChange}
+                                    onBlur={isValidEmail}
+                                >
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group controlId="formPassword">
