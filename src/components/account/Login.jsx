@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { login } from '../../services/userService';
+import { login as userLogin } from '../../services/userService';
+import { login as ownerLogin } from '../../services/ownerService';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -11,7 +12,6 @@ import { validateEmail } from '../helpers/validateEmail';
 
 const Login = () => {
     const [user, handleUser] = useState({ email: '', password: '', isOwner: false });
-    // const [owner, handleOwner] = useState(false);
     const [errorObj, handleError] = useState({ error: false, message: '', alertShow: false });
     let history = useHistory();
 
@@ -34,10 +34,15 @@ const Login = () => {
     }
 
     const attemptLogin = () => {
-        //TODO. Hit Owner api for login. Separate calls.
-        login(user)
-            .then(handleSuccess)
-            .catch(handleErrorLogin);
+        if (user.isOwner) {
+            ownerLogin(user)
+                .then(handleSuccess)
+                .catch(handleErrorLogin);
+        } else {
+            userLogin(user)
+                .then(handleSuccess)
+                .catch(handleErrorLogin);
+        }
     }
 
     const handleAlertClose = (event) => {

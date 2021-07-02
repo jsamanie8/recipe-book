@@ -18,4 +18,22 @@ const create = (payload) => {
         .catch(helpers.globalError);
 }
 
-export { create }
+const login = (payload) => {
+    const config = {
+        method: 'POST',
+        url: `${baseUrl}/login`,
+        data: payload,
+        withCredentials: true,
+        crossdomain: true,
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return axios(config)
+        .then(helpers.globalSuccess)
+        .catch(helpers.globalError);
+}
+
+export {
+    create,
+    login
+}
