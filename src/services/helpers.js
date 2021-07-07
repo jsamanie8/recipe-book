@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 const globalSuccess = response => {
     return response.data;

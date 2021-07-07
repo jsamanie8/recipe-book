@@ -33,7 +33,22 @@ const login = (payload) => {
         .catch(helpers.globalError);
 }
 
+const getById = (id) => {
+    const config = {
+        method: 'GET',
+        url: `${baseUrl}/${id}`,
+        withCredentials: true,
+        crossdomain: true,
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return axios(config)
+        .then(helpers.globalSuccess)
+        .catch(helpers.globalError);
+}
+
 export {
     create,
-    login
+    login,
+    getById
 }
